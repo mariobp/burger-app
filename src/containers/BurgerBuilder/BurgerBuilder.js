@@ -8,7 +8,7 @@ import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+import * as actions from '../../store/actions';
 
 class BurgerBuilder extends Component {
   state = {
@@ -18,14 +18,7 @@ class BurgerBuilder extends Component {
   }
 
   componentDidMount() {
-    axios.get('/ingredients.json')
-      .then(response => {
-        console.log(response);
-        this.setState({ ingredients: response.data  });
-      })
-      .catch(error => {
-        this.setState({ error: true });
-      });
+    this.props.onInitIngredient();
   }
 
   updatePurchaseState(ingredients) {
@@ -49,6 +42,7 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
+    this.props.onInitPurchase();
     this.props.history.push( '/checkout');
   }
 
@@ -63,7 +57,8 @@ class BurgerBuilder extends Component {
     if (this.state.loading) {
       orderSummary = <Spinner />
     }
-    let burger = <Spinner />;
+    let burger = this.props.error ? <p>Ingredients can't be loaded.</p>: <Spinner />;
+
     if (this.props.ings) {
       burger =  (
         <Aux>
@@ -99,15 +94,18 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error
   };
 };
 
 const mapDispatchToProps = dispacth => {
   return {
-    onIngredientAdded: (ingredientName) => dispacth({ type: actionTypes.ADD_INGREDIENT, ingredientName }),
-    onIngredientRemoved: (ingredientName) => dispacth({ type: actionTypes.REMOVE_INGREDIENT, ingredientName }),
+    onIngredientAdded: (ingredientName) => dispacth(actions.addIngredient(ingredientName)),
+    onIngredientRemoved: (ingredientName) => dispacth(actions.removeIngredient(ingredientName)),
+    onInitIngredient: () => dispacth(actions.initIngredients()),
+    onInitPurchase: () => dispacth(actions.purchaseInit())
   };
 };
 

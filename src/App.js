@@ -5,6 +5,7 @@ import Layout from './hoc/Layout/Layout';
 import BugerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
 import Orders from './containers/Orders/Orders';
+import Auth from './containers/auth/auth';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Switch>
           <Route path="/checkout" component={Checkout}/>
           <Route path="/orders" component={Orders}/>
+          <Route path="/auth" component={Auth}/>
           <Route path="/" exact component={BugerBuilder}/>
         </Switch>
       </Layout>
