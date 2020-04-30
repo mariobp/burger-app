@@ -7,6 +7,7 @@ import Input from '../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions';
+import { updatedObject, checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component {
   state = {
@@ -117,24 +118,6 @@ class ContactData extends Component {
     this.props.onOderBurger(orderData, this.props.token);
   }
 
-  checkValidity(value, rules) {
-    let isValid = true;
-  
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-  
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-  
-    return isValid;
-  }
-
   isFormValid(formData) {
     const findInvalidValue = Object.keys(formData)
       .find(key => formData[key].valid === false);
@@ -142,18 +125,17 @@ class ContactData extends Component {
   }
 
   onchangeHandler = (event, inputIndetifier) => {
-    const updateOrderForm = {
-      ...this.state.orderForm
-    };
-    const updatedFormElement = {
-      ...updateOrderForm[inputIndetifier]
-    };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-    updatedFormElement.touched = true;
-    updateOrderForm[inputIndetifier] = updatedFormElement;
+   
+    const value = event.target.value;
+    const updatedFormElement = updatedObject(this.state.orderForm[inputIndetifier], {
+      value: value,
+      valid: checkValidity(value, this.state.orderForm[inputIndetifier].validation),
+      touched: true,
+    });
+    const updateOrderForm = updatedObject(this.state.orderForm, {
+      [inputIndetifier]: updatedFormElement,
+    });
     const formIsValid = this.isFormValid(updateOrderForm);
-    console.log('isValidForm', formIsValid);
     this.setState({ orderForm: updateOrderForm, formIsValid });
   }
 

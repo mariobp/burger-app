@@ -8,7 +8,6 @@ export const authStart = () => {
 };
 
 export const authFail = (error) => {
-  console.log(error);
   return {
     type: actionTypes.AUTH_FAIL,
     error
@@ -27,9 +26,7 @@ export const logout = () => {
     type: actionTypes.AUTH_LOGOUT
   }
 };
-export const checkAuthTimeout = (expirationTime) => {
-  console.log(expirationTime);
-  
+export const checkAuthTimeout = (expirationTime) => {  
   return dispatch => {
     setTimeout(() => {
       sessionStorage.removeItem('token');
@@ -80,7 +77,6 @@ export const authCheckState = () => {
       dispatch(logout());
     } else {
       const expirationDate = new Date(sessionStorage.getItem('expirationDate'));
-      console.log(expirationDate < new Date());
       if (expirationDate < new Date()) {
         dispatch(logout());
       } else {
