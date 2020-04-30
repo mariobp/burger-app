@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FECTH_ORDERS_SUCCESS:
       return fecthOrdersSuccess(state, action);
     case actionTypes.FECTH_ORDERS_FAIL:
-      return  updatedObject({loading: false});
+      return  updatedObject(state, {loading: false});
     default:
       return state;
   }

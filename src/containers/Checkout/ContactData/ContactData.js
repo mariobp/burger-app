@@ -107,13 +107,14 @@ class ContactData extends Component {
         return acc;
       }, {});
     
-    const data = {
+    const orderData = {
       ...formData,
       ingredients: this.props.ingredients,
       price: this.props.price,
+      userId: this.props.userId
     };
 
-    this.props.onOderBurger(data);
+    this.props.onOderBurger(orderData, this.props.token);
   }
 
   checkValidity(value, rules) {
@@ -207,13 +208,15 @@ const mapStateToProps = state => {
   return {
     ingredients: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading
+    loading: state.order.loading,
+    token: state.auth.token,
+    userId: state.auth.userId
   };
 };
 
 const mapDispacthToProps = dispatch => {
   return {
-    onOderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData)),
+    onOderBurger: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token)),
   }
 };
 
