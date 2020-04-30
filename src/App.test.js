@@ -1,9 +1,16 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
+test('renders Burger Builder link', () => {
+  const { getAllByText } = render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>);
+  const linkElement = getAllByText(/Burger Builder/i)[0];
   expect(linkElement).toBeInTheDocument();
 });
