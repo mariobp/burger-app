@@ -45,9 +45,9 @@ export const auth = (email, password, isSignUp) => {
       password,
       returnSecureToken: true
     };
-    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
+    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCVFSArTKGrDWNCJK0gAIHrJ4WByIY9Y-4';
     if (isSignUp) {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCVFSArTKGrDWNCJK0gAIHrJ4WByIY9Y-4';
     }
     axios.post(url, authData)
       .then(response => {
